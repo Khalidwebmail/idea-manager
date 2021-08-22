@@ -1,0 +1,19 @@
+{
+  "name": "khalid/idea-manager",
+  "description": "Manage idea management system that will help to visualize the idea requests currently in the queue along with status",
+  "type": "wordpress-plugin",
+  "license": "GPLv2",
+  "authors": [
+    {
+      "name": "Khalidwebmail",
+      "email": "csewebmail@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "Idea\\Manager\\": "include/"
+    }
+  }
+}
