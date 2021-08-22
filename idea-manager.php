@@ -43,7 +43,7 @@ final class Idea_Manager {
     private function __construct() {
         $this->wp_im_define_constant();
         register_activation_hook( __FILE__, [ $this, 'wp_im_activate' ] );
-        //add_action( 'init', [ $this, 'wp_im_init_plugin' ] );
+        add_action( 'plugins_loaded', [ $this, 'wp_im_init_plugin' ] );
     }
 
     /**
@@ -78,9 +78,12 @@ final class Idea_Manager {
      *
      * @return void
      */
-//    private static function wp_im_init_plugin() {
-//
-//    }
+    public static function wp_im_init_plugin() {
+
+        if( is_admin() ) {
+            new \Idea\Manager\Admin();
+        }
+    }
 
     /**
      * Do stuff upon plugin activation
