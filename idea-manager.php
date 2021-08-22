@@ -28,9 +28,17 @@ if( file_exists( __DIR__.'/vendor/autoload.php' ) ) {
 }
 
 /**
- * Create schelaton of plucin
+ * Class Idea_Manager
  */
 final class Idea_Manager {
+    /**
+     * Idea_Manager constructor.
+     */
+    private function __construct() {
+        $this->wp_im_define_constants();
+        register_activation_hook( __FILE__, [ $this, 'wp_im_activate' ] );
+        add_action( 'plugins_loaded', [ $this, 'wp_im_init_plugin' ] );
+    }
 
     /**
      * Plugin version
@@ -38,18 +46,9 @@ final class Idea_Manager {
     public const version = '1.0.0';
 
     /**
-     * Class constructor
-     */
-    private function __construct() {
-        $this->wp_im_define_constant();
-        register_activation_hook( __FILE__, [ $this, 'wp_im_activate' ] );
-        //add_action( 'init', [ $this, 'wp_im_init_plugin' ] );
-    }
-
-    /**
-     *  Initialize singleton instance
+     * Initialize singleton instance
      *
-     * @return false|Idea_Manager
+     * @return \Idea_Manager
      */
     public static function wp_im_init() {
         static $instance  = false;
@@ -65,12 +64,12 @@ final class Idea_Manager {
      *
      * @return void
      */
-    private function wp_im_define_constant() {
+    public function wp_im_define_constants() {
         define( 'WP_IM_VERSION', self::version );
         define( 'WP_IM_FILE', __FILE__ );
         define( 'WP_IM_PATH', __DIR__ );
         define( 'WP_IM_URL', plugins_url('', WP_IM_FILE ) );
-        define( 'WP_IM_ASSETS', WP_IM_URL . '/asset' );
+        define( 'WP_IM_ASSETS', WP_IM_URL . '/assets' );
     }
 
     /**
@@ -78,9 +77,13 @@ final class Idea_Manager {
      *
      * @return void
      */
-//    private static function wp_im_init_plugin() {
-//
-//    }
+
+    public function wp_im_init_plugin()
+    {
+        if( is_admin() ) {
+            new \Idea\Manager\Admin();
+        }
+    }
 
     /**
      * Do stuff upon plugin activation
